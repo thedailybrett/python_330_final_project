@@ -160,5 +160,5 @@ cython_debug/
 .idea/
 
 images/
-photo_journal_app/db.json
-photo_journal_app/test.json
+../photo_journal_app/db.json
+../photo_journal_app/test.json
