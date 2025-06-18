@@ -72,9 +72,6 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
         db.insert({"entry": entry,
                    "file_path": photo_file_path,
                    "uploaded_at": uploaded_at})
-        #photo_record = db.get(doc_id=photo_id)             # <------ NEW
-        #photo_record["doc_id"] = photo_id                  # <------ NEW
-        #db.update(photo_record, doc_ids=[photo_id])        # <------ NEW
     sorted_photos = get_sorted_photos(db.all(), 0, PHOTOS_PER_PAGE)
     context = {
         "request": request,
@@ -85,8 +82,7 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
     return templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
 
 @app.get("/edit-photo", response_class=HTMLResponse)
-async def get_edit_photo_form(request: Request, photo_id: int):
-    db = get_db()
+async def get_edit_photo_form(request: Request, photo_id: int, db: TinyDB = Depends(get_db)):
     Photo = Query()
     photo = db.get(Photo.doc_id == photo_id)
     template = templates.get_template("edit_photo_form.html.jinja2")
@@ -96,9 +92,8 @@ async def get_edit_photo_form(request: Request, photo_id: int):
 async def edit_photo(request: Request,
                      photo_id: int = Form(...),
                      entry: str = Form(...),
+                     db: TinyDB = Depends(get_db)
                      ):
-    db = get_db()
-    Photo = Query()
     db.update({"entry": entry}, doc_ids=[photo_id])
     photo = db.get(doc_id=photo_id)
     photo["doc_id"] = photo_id
