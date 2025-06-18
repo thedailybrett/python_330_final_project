@@ -72,6 +72,9 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
         db.insert({"entry": entry,
                    "file_path": photo_file_path,
                    "uploaded_at": uploaded_at})
+        #photo_record = db.get(doc_id=photo_id)             # <------ NEW
+        #photo_record["doc_id"] = photo_id                  # <------ NEW
+        #db.update(photo_record, doc_ids=[photo_id])        # <------ NEW
     sorted_photos = get_sorted_photos(db.all(), 0, PHOTOS_PER_PAGE)
     context = {
         "request": request,
@@ -102,5 +105,22 @@ async def edit_photo(request: Request,
     template = templates.get_template("click_to_edit_entry.html.jinja2")
     html_fragment = template.render(request=request, photo=photo)
     return HTMLResponse(html_fragment)
-    #context = {"request": request, "photo": photo}
-    #return template.render(context, block_name="click_to_edit_entry")
+
+'''
+@app.delete("/delete-photo")
+async def delete_photo(request: Request, photo_id: int):
+    db = get_db()
+    #Photo = Query()
+    photo = db.get(doc_id=photo_id)
+    if photo:
+        file_path = photo.get("file_path", "")
+        if file_path:
+            full_image_path = os.path.join("static/images", file_path)
+            try:
+                os.remove(full_image_path)
+            except Exception as e:
+                print(f"Error deleting image file: {e}")
+        db.remove(doc_ids=[photo_id])
+    return Response(status_code=200)
+
+'''

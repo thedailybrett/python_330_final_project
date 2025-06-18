@@ -99,3 +99,4 @@ def test_load_photos(mock_image_open, mock_open, mock_resize):
     for entry in remaining_photo_entries:
         assert entry.encode() in response.content
 '''
+
