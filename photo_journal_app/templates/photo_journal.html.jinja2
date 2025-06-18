@@ -59,8 +59,7 @@
                 {% endif %}
                 {% if photos %}
                     {% for photo in photos %}
-                        <div id="photo-{{ photo.doc_id }}"
-                             class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-4">
+                        <div id="photo-{{ photo.doc_id }}" class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-4">
                             <div class="flex justify-center">
                                 <img class="rounded-t-lg transition" src="{{ url_for('static', path=photo.file_path) }}" alt="" />
                             </div>
@@ -85,6 +84,15 @@
                                 </div>
                             </div>
                         </div>
+                        {% if loop.last %}
+                            <div
+                                    hx-get="/load-photos"
+                                    hx-trigger="revealed"
+                                    hx-target="#photos"
+                                    hx-swap="beforeend"
+                                    hx-vals='{"photo_count": "{{ photo_count }}"}'>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% endblock %}

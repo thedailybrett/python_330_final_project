@@ -101,11 +101,10 @@ async def edit_photo(request: Request,
     html_fragment = template.render(request=request, photo=photo)
     return HTMLResponse(html_fragment)
 
-'''
+
 @app.delete("/delete-photo")
-async def delete_photo(request: Request, photo_id: int):
-    db = get_db()
-    #Photo = Query()
+async def delete_photo(photo_id: int,
+                       db: TinyDB = Depends(get_db)):
     photo = db.get(doc_id=photo_id)
     if photo:
         file_path = photo.get("file_path", "")
@@ -118,4 +117,13 @@ async def delete_photo(request: Request, photo_id: int):
         db.remove(doc_ids=[photo_id])
     return Response(status_code=200)
 
-'''
+@app.get("/load-photos", response_class=HTMLResponse)
+async def load_photos(request: Request, photo_count: int, db: TinyDB = Depends(get_db)):
+    new_photo_count = photo_count + PHOTOS_PER_PAGE
+    sorted_photos = get_sorted_photos(db.all(), 0, new_photo_count)
+    context = {
+        "request": request,
+        "photos": sorted_photos,
+        "photo_count": new_photo_count
+        }
+    return templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
