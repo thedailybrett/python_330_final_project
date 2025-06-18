@@ -1,0 +1,41 @@
+                                <div class="p-5 flex-grow">
+                                    <p class="mb-2 text-sm leading-6 text-gray-600">Uploaded {{ photo.uploaded_at }}</p>
+                                    <div id="photo-edit-fields-{{ photo.doc_id }}">
+                                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer">{{ photo.entry }}</p>
+                                        <p
+                                                hx-get="/edit-photo"
+                                                hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+                                                hx-swap="outerHTML"
+                                                hx-vals='{"photo_id": "{{ photo.doc_id }}"}'
+                                          >
+                                            {{ photo.journal }}
+                                    </div>
+                                </div>
+
+
+                                                                        {% block click_to_edit_entry %}
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer"
+                                               hx-get="/edit-photo"
+                                               hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+                                               hx-swap="outerHTML"
+                                               hx-vals='{"photo_id": "{{ photo.doc_id }}"}'>
+                                                {{ photo.entry }}
+                                            </p>
+                                        {% endblock %}
+
+
+                                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer">
+                                            {{ photo.entry }}
+                                        </p>
+
+                                    <div id="photo-edit-fields-{{ photo.doc_id }}">
+                                        {% block click_to_edit_entry %}
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer"
+                                               hx-get="/edit-photo"
+                                               hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+                                               hx-swap="outerHTML"
+                                               hx-vals='{"photo_id": "{{ photo.doc_id }}"}'>
+                                                {{ photo.entry }}
+                                            </p>
+                                        {% endblock %}
+                                    </div>

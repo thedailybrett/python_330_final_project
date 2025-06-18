@@ -66,9 +66,14 @@
                             </div>
                             <div class="flex">
                                 <div class="p-5 flex-grow">
-                                    <p class="mb-2 text-sm leading-6 text-gray-600">Uploaded {{ photo.uploaded_at }}</p>
+                                    <p class="mb-2 text-sm leading-6 text-gray-600">
+                                        Uploaded {{ photo.uploaded_at }}
+                                    </p>
                                     <div id="photo-edit-fields-{{ photo.doc_id }}">
-                                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer">{{ photo.entry }}</p>
+                                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 cursor-pointer">
+                                            {{ photo.entry }}
+                                        </p>
+                                        {% include "click_to_edit_entry.html.jinja2" %}
                                     </div>
                                 </div>
                                 <div>

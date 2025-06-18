@@ -11,6 +11,9 @@ from jinja2_fragments.fastapi import Jinja2Blocks
 from PIL import Image
 from tinydb import TinyDB, Query
 
+# photo_journal_app/
+# tailwindcss -i static/src/tw.css -o static/css/styles.css --watch
+# uvicorn main:app --reload
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -39,7 +42,8 @@ def resize_image_for_web(photo_file_path):
 # FastAPI routes
 
 @app.get("/", response_class=HTMLResponse)
-def photo_journal(request: Request, db: TinyDB = Depends(get_db)):
+def photo_journal(request: Request,
+                  db: TinyDB = Depends(get_db)):
     sorted_photos = get_sorted_photos(db.all(), 0, PHOTOS_PER_PAGE)
     context = {
         "request": request,
@@ -76,3 +80,27 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
         "invalid_image_file": not valid_image_file,
     }
     return templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
+
+@app.get("/edit-photo", response_class=HTMLResponse)
+async def get_edit_photo_form(request: Request, photo_id: int):
+    db = get_db()
+    Photo = Query()
+    photo = db.get(Photo.doc_id == photo_id)
+    template = templates.get_template("edit_photo_form.html.jinja2")
+    return HTMLResponse(template.render(request=request, photo=photo))
+
+@app.post("/edit-photo", response_class=HTMLResponse)
+async def edit_photo(request: Request,
+                     photo_id: int = Form(...),
+                     entry: str = Form(...),
+                     ):
+    db = get_db()
+    Photo = Query()
+    db.update({"entry": entry}, doc_ids=[photo_id])
+    photo = db.get(doc_id=photo_id)
+    photo["doc_id"] = photo_id
+    template = templates.get_template("click_to_edit_entry.html.jinja2")
+    html_fragment = template.render(request=request, photo=photo)
+    return HTMLResponse(html_fragment)
+    #context = {"request": request, "photo": photo}
+    #return template.render(context, block_name="click_to_edit_entry")

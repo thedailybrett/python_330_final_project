@@ -43,7 +43,7 @@ After processing the image and storing this data, the `post_photo` function uses
 
 To see this code in action, start up a local development server and test out the current version of the app in your web browser. Begin by creating and activating a new virtual environment for the project's dependencies. Then, from the `photo_journal_app` folder, run `pip install -r requirements.txt` to install those dependencies. Since this project uses TailwindCSS for styling its HTML, you need to run the following command to generate a stylesheet (and to pick up any changes you make to the CSS utility classes in your HTML template files): `tailwindcss -i static/src/tw.css -o static/css/styles.css --watch`. You will also need to create a new `images` folder inside the `photo_journal_app/static/` folder for storing your uploaded images (this folder is included in your project's `.gitignore` file so its contents are not tracked in version control). Then you can start your local FastAPI development server in another terminal window with the `fastapi dev main.py` command. Now go to `http://127.0.0.1:8000` in your computer's web browser, and you should see the home screen of the Photo Journal app. Go ahead and use the 'Add new photo' form to upload an image file from your computer along with a journal entry, and you should see your photo displayed in the 'My photos' section of the web page. 
 
-![Photo Journal screenshot](photo-journal-screenshot.png)
+![Photo Journal screenshot](photo_journal_app/static/images/photo-journal-screenshot.png)
 
 ### Automated Tests
 
