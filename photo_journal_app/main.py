@@ -4,7 +4,7 @@ import time
 from typing import Annotated
 
 import aiofiles
-from fastapi import Depends, FastAPI, File, Form, Request, Response, UploadFile, Cookie
+from fastapi import Depends, FastAPI, File, Form, Request, Response, UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2_fragments.fastapi import Jinja2Blocks
@@ -136,7 +136,7 @@ async def load_photos(request: Request,
                       photo_count: int,
                       db: TinyDB = Depends(get_db)
                       ):
-    total_photos = len(db.all())
+    #total_photos = len(db.all())
     new_photo_count = photo_count + PHOTOS_PER_PAGE
     #sorted_photos = get_sorted_photos(db.all(), 0, new_photo_count)
     sorted_photos = get_sorted_photos(db.all(), photo_count, new_photo_count)
@@ -146,5 +146,5 @@ async def load_photos(request: Request,
         "photo_count": new_photo_count,
         }
     response = templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
-    response.set_cookie(key="photo_count", value=str(new_photo_count))
+    #response.set_cookie(key="photo_count", value=str(new_photo_count))
     return response
