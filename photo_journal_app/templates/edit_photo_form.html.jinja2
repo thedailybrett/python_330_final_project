@@ -1,11 +1,21 @@
 {% block edit_photo_form %}
-<form hx-post="/edit-photo"
-      hx-target="#photo-edit-fields-{{ photo.doc_id }}"
-      hx-swap="outerHTML"
-      method="post">
-  <input type="hidden" name="photo_id" value="{{ photo.doc_id }}">
-  <textarea name="entry" rows="3" class="w-full p-2 border border-gray-300 rounded">{{ photo.entry }}</textarea>
-  <button type="submit" class="mt-2 rounded bg-indigo-600 px-3 py-1 text-white">Save</button>
-</form>
+    <form hx-post="/edit-photo"
+          hx-trigger="submit"
+          hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+          hx-swap="outerHTML"
+          method="post">
+        <input type="hidden"
+               name="photo_id"
+               value="{{ photo.doc_id }}">
+        <textarea id="entry"
+                  name="entry"
+                  class="w-full p-2 border border-blue-300 rounded">
+            {{ photo.entry|trim }}
+        </textarea>
+        <button type="submit"
+                class="mt-2 rounded bg-indigo-600 px-3 py-1 text-white">
+            Save
+        </button>
+    </form>
 {% endblock %}
 
