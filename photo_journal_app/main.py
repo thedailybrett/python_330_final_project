@@ -16,6 +16,8 @@ from tinydb import TinyDB, Query
 # tailwindcss -i static/src/tw.css -o static/css/styles.css --watch
 # cd photo_journal_app
 # uvicorn main:app --reload
+#pytest test_main.py
+
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -91,6 +93,7 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
     }
     return templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
 
+
 @app.get("/edit-photo", response_class=HTMLResponse)
 async def get_edit_photo_form(request: Request,
                               photo_id: int,
@@ -106,11 +109,11 @@ async def get_edit_photo_form(request: Request,
     print(f"#photo-edit-fields-{photo.doc_id}")
     print(f"photo_id:{photo_id}")
     template = templates.get_template("edit_photo_form.html.jinja2")
-    html_fragment = template.render(request=request, photo=photo)
-    return HTMLResponse(html_fragment)
+    return HTMLResponse(template.render(request=request, photo=photo))
     #template = templates.get_template("click_to_edit_entry.html.jinja2")
     #html_fragment = template.render(request=request, photo=photo)
     #return HTMLResponse(html_fragment)
+
 
 @app.post("/edit-photo", response_class=HTMLResponse)
 async def edit_photo(request: Request,
@@ -127,6 +130,7 @@ async def edit_photo(request: Request,
     return HTMLResponse(html_fragment)
     #template = templates.get_template("edit_photo_form.html.jinja2")
     #return HTMLResponse(template.render(request=request, photo=photo))
+
 
 
 @app.delete("/delete-photo")

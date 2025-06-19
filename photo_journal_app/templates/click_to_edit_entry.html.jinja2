@@ -1,10 +1,8 @@
 <!-- templates/click_to_edit_entry.html.jinja2 -->
-    {% block click_to_edit_entry %}
-        <p class="mb-3 font-normal text-blue-600 dark:text-gray-400 cursor-pointer"
-           hx-get="/edit-photo"
-           hx-target="#photo-edit-fields-{{ photo.doc_id }}"
-           hx-swap="outerHTML"
-           hx-vals='{"photo_id": "{{ photo.doc_id }}"}'>
-            {{ photo.entry }}
-        </p>
-    {% endblock %}
+<p class="mb-3 font-normal text-blue-600 dark:text-gray-400 cursor-pointer"
+   hx-get="/edit-photo"
+   hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+   hx-swap="innerHTML"
+   hx-vals='{"photo_id": "{{ photo.doc_id }}"}'>
+    {{ photo.entry }}
+</p>
