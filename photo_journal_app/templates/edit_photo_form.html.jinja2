@@ -4,16 +4,9 @@
           hx-target="#photo-edit-fields-{{ photo.doc_id }}"
           hx-swap="outerHTML"
           method="post">
-        <input type="hidden"
-               name="photo_id"
-               value="{{ photo.doc_id }}">
-        <textarea id="entry"
-                  name="entry"
-                  class="w-full p-2 border border-blue-300 rounded">
-            {{ photo.entry|trim }}
-        </textarea>
-        <button type="submit"
-                class="mt-2 rounded bg-indigo-600 px-3 py-1 text-white">
+        <input type="hidden" name="photo_id" value="{{ photo.doc_id }}">
+        <textarea name="entry" row="3" class="w-full p-2 border border-blue-600 rounded">{{ photo.entry }}</textarea>
+        <button type="submit" class="mt-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Save
         </button>
     </form>

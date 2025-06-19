@@ -80,7 +80,9 @@
                                     <p class="mb-2 text-sm leading-6 text-gray-600">
                                         Uploaded {{ photo.uploaded_at }}
                                     </p>
-                                    {% include "click_to_edit_entry.html.jinja2" %}
+                                    <div id="photo-edit-fields-{{ photo.doc_id }}">
+                                        {% include "click_to_edit_entry.html.jinja2" %}
+                                    </div>
                                 </div>
                                 <div>
                                     <!-- Delete Icon -->
