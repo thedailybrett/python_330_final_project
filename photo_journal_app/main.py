@@ -4,11 +4,12 @@ import time
 from typing import Annotated
 
 import aiofiles
-from fastapi import Depends, FastAPI, File, Form, Request, Response, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Request, Response, UploadFile, Cookie
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from jinja2_fragments.fastapi import Jinja2Blocks
 from PIL import Image
+from pathlib import Path
 from tinydb import TinyDB, Query
 
 # cd photo_journal_app
@@ -21,7 +22,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Blocks(directory="templates")
 
 def get_db():
-    return TinyDB("db.json")
+    base_dir = Path(__file__).resolve().parent
+    db_path = base_dir / "db.json"
+    return TinyDB(str(db_path))
 
 PHOTOS_PER_PAGE = 3
 
@@ -135,12 +138,13 @@ async def load_photos(request: Request,
                       ):
     total_photos = len(db.all())
     new_photo_count = photo_count + PHOTOS_PER_PAGE
-    sorted_photos = get_sorted_photos(db.all(), 0, new_photo_count)
-    has_more_photos = new_photo_count < total_photos
+    #sorted_photos = get_sorted_photos(db.all(), 0, new_photo_count)
+    sorted_photos = get_sorted_photos(db.all(), photo_count, new_photo_count)
     context = {
         "request": request,
         "photos": sorted_photos,
         "photo_count": new_photo_count,
-        "has_more_photos": has_more_photos,
         }
-    return templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
+    response = templates.TemplateResponse(name="photo_journal.html.jinja2", context=context, block_name="photos")
+    response.set_cookie(key="photo_count", value=str(new_photo_count))
+    return response

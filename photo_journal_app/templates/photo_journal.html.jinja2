@@ -97,7 +97,6 @@
                             </div>
                         </div>
                         {% if loop.last %}
-                            {% if has_more_photos %}
                                 <div
                                         hx-get="/load-photos"
                                         hx-trigger="revealed"
@@ -106,7 +105,6 @@
                                         hx-vals='{"photo_count": "{{ photo_count }}"}'
                                         style="border: 1px dashed red;">
                                 </div>
-                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
