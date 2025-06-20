@@ -1,0 +1,21 @@
+{% block edit_photo_form %}
+    <form id="test-form"
+          hx-post="/edit-photo"
+          hx-trigger="submit"
+          hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+          hx-swap="innerHTML"
+          method="post">
+        <input type="hidden" name="photo_id" value="{{ photo.doc_id }}">
+        <textarea name="entry" class="w-full p-2 border border-amber-950 rounded">{{ photo.entry|trim }}</textarea>
+        <button type="submit" class="mt-4 rounded-md bg-amber-900 px-3 py-2 text-sm font-semibold text-amber-950 shadow-sm hover:bg-amber-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-800">
+            Save
+        </button>
+    </form>
+    <script>
+    document.getElementById('test-form').addEventListener('submit', function(e){
+        e.preventDefault();
+        console.log('form submit triggered');
+    });
+</script>
+{% endblock %}
+

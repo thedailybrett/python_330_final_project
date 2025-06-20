@@ -1,0 +1,8 @@
+<!-- templates/click_to_edit_entry.html.jinja2 -->
+<p class="mb-3 font-bold text-amber-950 dark:text-amber-950 cursor-pointer"
+   hx-get="/edit-photo"
+   hx-target="#photo-edit-fields-{{ photo.doc_id }}"
+   hx-swap="innerHTML"
+   hx-vals='{"photo_id": "{{ photo.doc_id }}"}'>
+    {{ photo.entry }}
+</p>
