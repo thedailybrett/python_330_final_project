@@ -78,11 +78,8 @@ async def post_photo(request: Request, entry: Annotated[str, Form()], photo_uplo
         photo_id = db.insert({"entry": entry,
                    "file_path": photo_file_path,
                    "uploaded_at": uploaded_at})
-        print(f"photo_id:{photo_id}")
         photo = db.get(doc_id=photo_id)
-        print(f"photo:{photo}")
         photo["doc_id"] = photo_id
-        print(f'photo["doc_id"]:{photo["doc_id"]}')
         db.update(photo, doc_ids=[photo_id])
     sorted_photos = get_sorted_photos(db.all(), 0, PHOTOS_PER_PAGE)
     context = {
@@ -99,15 +96,10 @@ async def get_edit_photo_form(request: Request,
                               photo_id: int,
                               db: TinyDB = Depends(get_db)
                               ):
-    print(f"photo_id:{photo_id}")
     photo = db.get(doc_id=photo_id)
-    print(f"photo:{photo}")
     if photo is None:
         raise ValueError(f"No photo found with doc_id {photo_id}")
     photo["doc_id"] = photo_id
-    print(f"Request:{request}")
-    print(f"#photo-edit-fields-{photo.doc_id}")
-    print(f"photo_id:{photo_id}")
     template = templates.get_template("edit_photo_form.html.jinja2")
     return HTMLResponse(template.render(request=request, photo=photo))
     #template = templates.get_template("click_to_edit_entry.html.jinja2")
@@ -121,7 +113,6 @@ async def edit_photo(request: Request,
                      entry: str = Form(...),
                      db: TinyDB = Depends(get_db)
                      ):
-    print(f"#photo-edit-fields-{photo_id}")
     db.update({"entry": entry}, doc_ids=[photo_id])
     photo = db.get(doc_id=photo_id)
     photo["doc_id"] = photo_id
